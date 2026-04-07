@@ -1,0 +1,1422 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ahmed Mustafa — Healthcare Data Analytics</title>
+  <meta name="description" content="Healthcare data analytics specialist helping medical laboratories in Egypt unlock revenue growth through patient analytics, doctor performance tracking, and corporate contract optimization." />
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ─── TOKENS ─────────────────────────────────────────────────── */
+    :root {
+      --bg:         #07090f;
+      --bg-2:       #0c1120;
+      --bg-3:       #111927;
+      --blue:       #1a73e8;
+      --blue-dim:   rgba(26,115,232,.12);
+      --blue-glow:  rgba(26,115,232,.35);
+      --gold:       #f0a500;
+      --gold-dim:   rgba(240,165,0,.12);
+      --green:      #34a853;
+      --red:        #ea4335;
+      --text-1:     #eef2ff;
+      --text-2:     #8899b4;
+      --text-3:     #4d607a;
+      --border:     rgba(255,255,255,.07);
+      --border-h:   rgba(26,115,232,.4);
+      --r:          14px;
+      --r-sm:       8px;
+      --font-d:     'Syne', sans-serif;
+      --font-b:     'DM Sans', sans-serif;
+      --transition: .3s cubic-bezier(.4,0,.2,1);
+    }
+
+    /* ─── RESET ──────────────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      color: var(--text-1);
+      font-family: var(--font-b);
+      font-size: 16px;
+      line-height: 1.65;
+      overflow-x: hidden;
+    }
+    img { display: block; max-width: 100%; }
+    a { color: inherit; text-decoration: none; }
+    ul { list-style: none; }
+
+    /* ─── SCROLLBAR ──────────────────────────────────────────────── */
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--blue); border-radius: 99px; }
+
+    /* ─── CUSTOM CURSOR ──────────────────────────────────────────── */
+    .cursor {
+      position: fixed; top: 0; left: 0; pointer-events: none; z-index: 9999;
+      mix-blend-mode: screen;
+    }
+    .cursor-dot {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: var(--blue);
+      transform: translate(-50%,-50%);
+      transition: transform .1s;
+    }
+    .cursor-ring {
+      width: 40px; height: 40px; border-radius: 50%;
+      border: 1.5px solid rgba(26,115,232,.6);
+      transform: translate(-50%,-50%);
+      transition: transform .18s ease, width .3s, height .3s, opacity .3s;
+      position: absolute; top: 0; left: 0;
+    }
+
+    /* ─── NOISE OVERLAY ─────────────────────────────────────────── */
+    body::before {
+      content: '';
+      position: fixed; inset: 0; pointer-events: none; z-index: 1;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.04'/%3E%3C/svg%3E");
+      opacity: .4;
+    }
+
+    /* ─── NAV ────────────────────────────────────────────────────── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      padding: 1.2rem 2rem;
+      display: flex; align-items: center; justify-content: space-between;
+      transition: background var(--transition), backdrop-filter var(--transition),
+                  border-color var(--transition);
+      border-bottom: 1px solid transparent;
+    }
+    nav.scrolled {
+      background: rgba(7,9,15,.85);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-color: var(--border);
+    }
+    .nav-logo {
+      font-family: var(--font-d);
+      font-weight: 700; font-size: 1.1rem;
+      letter-spacing: -.01em;
+      display: flex; align-items: center; gap: .6rem;
+    }
+    .nav-logo span {
+      display: inline-block;
+      width: 8px; height: 8px; border-radius: 50%;
+      background: var(--blue);
+      box-shadow: 0 0 12px var(--blue);
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0%,100% { opacity:1; transform:scale(1); }
+      50%       { opacity:.5; transform:scale(.7); }
+    }
+    .nav-links {
+      display: flex; align-items: center; gap: 2.5rem;
+    }
+    .nav-links a {
+      font-size: .9rem; font-weight: 500;
+      color: var(--text-2);
+      transition: color var(--transition);
+      letter-spacing: .01em;
+    }
+    .nav-links a:hover { color: var(--text-1); }
+    .nav-cta {
+      background: var(--blue);
+      color: #fff !important;
+      padding: .55rem 1.4rem;
+      border-radius: 99px;
+      font-size: .85rem !important;
+      font-weight: 600 !important;
+      letter-spacing: .02em;
+      transition: box-shadow var(--transition), transform var(--transition) !important;
+    }
+    .nav-cta:hover {
+      box-shadow: 0 0 24px var(--blue-glow);
+      transform: translateY(-1px);
+    }
+    .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; }
+    .hamburger span { width: 24px; height: 2px; background: var(--text-1); transition: var(--transition); border-radius: 2px; }
+
+    /* ─── HERO ───────────────────────────────────────────────────── */
+    #hero {
+      min-height: 100vh;
+      display: flex; align-items: center;
+      position: relative; overflow: hidden;
+      padding: 8rem 2rem 4rem;
+    }
+    /* Grid background */
+    #hero::before {
+      content: '';
+      position: absolute; inset: 0;
+      background-image:
+        linear-gradient(rgba(26,115,232,.06) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(26,115,232,.06) 1px, transparent 1px);
+      background-size: 60px 60px;
+      mask-image: radial-gradient(ellipse 80% 60% at 50% 50%, black, transparent);
+    }
+    /* Radial glow */
+    #hero::after {
+      content: '';
+      position: absolute;
+      top: -10%; left: 50%; transform: translateX(-50%);
+      width: 900px; height: 600px;
+      background: radial-gradient(ellipse, rgba(26,115,232,.15) 0%, transparent 65%);
+      pointer-events: none;
+    }
+    .hero-inner {
+      position: relative; z-index: 2;
+      max-width: 1140px; margin: 0 auto;
+      width: 100%;
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 4rem; align-items: center;
+    }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: .6rem;
+      background: var(--blue-dim);
+      border: 1px solid rgba(26,115,232,.25);
+      color: var(--blue);
+      font-size: .8rem; font-weight: 600;
+      letter-spacing: .08em; text-transform: uppercase;
+      padding: .4rem 1rem; border-radius: 99px;
+      margin-bottom: 1.8rem;
+      animation: fadeUp .6s ease both;
+    }
+    .hero-badge::before {
+      content: ''; width: 6px; height: 6px; border-radius: 50%;
+      background: var(--blue); animation: pulse 2s infinite;
+    }
+    h1 {
+      font-family: var(--font-d);
+      font-size: clamp(2.6rem, 5vw, 4rem);
+      font-weight: 800;
+      line-height: 1.1;
+      letter-spacing: -.03em;
+      margin-bottom: 1.4rem;
+      animation: fadeUp .7s .1s ease both;
+    }
+    h1 .accent { color: var(--blue); }
+    h1 .gold   { color: var(--gold); }
+    .hero-sub {
+      font-size: 1.05rem;
+      color: var(--text-2);
+      line-height: 1.7;
+      max-width: 480px;
+      margin-bottom: 2.4rem;
+      animation: fadeUp .7s .2s ease both;
+    }
+    .hero-actions {
+      display: flex; align-items: center; gap: 1rem; flex-wrap: wrap;
+      animation: fadeUp .7s .3s ease both;
+    }
+    .btn-primary {
+      background: var(--blue);
+      color: #fff;
+      padding: .85rem 2rem;
+      border-radius: 99px;
+      font-weight: 600; font-size: .95rem;
+      letter-spacing: .02em;
+      transition: box-shadow var(--transition), transform var(--transition);
+      display: inline-flex; align-items: center; gap: .5rem;
+    }
+    .btn-primary:hover {
+      box-shadow: 0 0 32px var(--blue-glow);
+      transform: translateY(-2px);
+    }
+    .btn-outline {
+      border: 1px solid var(--border-h);
+      color: var(--text-1);
+      padding: .85rem 2rem;
+      border-radius: 99px;
+      font-weight: 500; font-size: .95rem;
+      transition: background var(--transition), border-color var(--transition);
+    }
+    .btn-outline:hover {
+      background: var(--blue-dim);
+      border-color: var(--blue);
+    }
+    /* Hero visual - animated terminal card */
+    .hero-visual {
+      animation: fadeUp .8s .35s ease both;
+    }
+    .terminal-card {
+      background: var(--bg-2);
+      border: 1px solid var(--border);
+      border-radius: var(--r);
+      overflow: hidden;
+      box-shadow: 0 40px 80px rgba(0,0,0,.5);
+    }
+    .terminal-bar {
+      background: var(--bg-3);
+      padding: .75rem 1rem;
+      display: flex; align-items: center; gap: .5rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .terminal-bar span {
+      width: 10px; height: 10px; border-radius: 50%;
+    }
+    .terminal-bar span:nth-child(1) { background: var(--red); }
+    .terminal-bar span:nth-child(2) { background: var(--gold); }
+    .terminal-bar span:nth-child(3) { background: var(--green); }
+    .terminal-label {
+      margin-left: auto; font-size: .75rem; color: var(--text-3);
+      font-family: 'Courier New', monospace;
+    }
+    .terminal-body { padding: 1.4rem; }
+    .kpi-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: .8rem;
+      margin-bottom: 1.2rem;
+    }
+    .kpi-card {
+      background: var(--bg-3);
+      border: 1px solid var(--border);
+      border-radius: var(--r-sm);
+      padding: .9rem 1rem;
+      transition: border-color var(--transition);
+    }
+    .kpi-card:hover { border-color: var(--blue-glow); }
+    .kpi-label {
+      font-size: .7rem; color: var(--text-3);
+      text-transform: uppercase; letter-spacing: .07em;
+      margin-bottom: .3rem;
+    }
+    .kpi-value {
+      font-family: var(--font-d);
+      font-size: 1.4rem; font-weight: 700;
+      letter-spacing: -.02em;
+    }
+    .kpi-value.blue  { color: var(--blue); }
+    .kpi-value.gold  { color: var(--gold); }
+    .kpi-value.green { color: var(--green); }
+    .kpi-value.red   { color: var(--red); }
+    .kpi-delta {
+      font-size: .72rem; color: var(--green);
+      display: flex; align-items: center; gap: .2rem; margin-top: .15rem;
+    }
+    .kpi-delta.neg { color: var(--red); }
+    /* Mini chart bars */
+    .mini-chart { display: flex; align-items: flex-end; gap: 3px; height: 40px; margin-top: 1rem; }
+    .bar-seg {
+      flex: 1; background: var(--blue-dim); border-radius: 3px 3px 0 0;
+      border: 1px solid rgba(26,115,232,.2);
+      position: relative; overflow: hidden;
+      animation: growUp .6s ease both;
+    }
+    .bar-seg::after {
+      content: ''; position: absolute; inset: 0;
+      background: linear-gradient(180deg, var(--blue) 0%, transparent 100%);
+      opacity: 0; transition: opacity var(--transition);
+    }
+    .bar-seg:hover::after { opacity: .3; }
+    @keyframes growUp {
+      from { transform: scaleY(0); transform-origin: bottom; }
+      to   { transform: scaleY(1); }
+    }
+    .bar-seg:nth-child(1) { height: 55%; animation-delay:.1s }
+    .bar-seg:nth-child(2) { height: 40%; animation-delay:.15s }
+    .bar-seg:nth-child(3) { height: 65%; animation-delay:.2s }
+    .bar-seg:nth-child(4) { height: 50%; animation-delay:.25s }
+    .bar-seg:nth-child(5) { height: 78%; animation-delay:.3s }
+    .bar-seg:nth-child(6) { height: 60%; animation-delay:.35s; background: var(--blue-dim); border-color: rgba(26,115,232,.5); }
+    .bar-seg:nth-child(6)::after { opacity:.15; }
+    .chart-label {
+      font-size: .68rem; color: var(--text-3);
+      display: flex; justify-content: space-between;
+      margin-top: .4rem;
+    }
+    .typing-line {
+      font-family: 'Courier New', monospace;
+      font-size: .78rem; color: var(--green);
+      margin-top: 1rem;
+      white-space: nowrap; overflow: hidden;
+      border-right: 2px solid var(--green);
+      animation: typing 3s steps(40) infinite alternate,
+                 blink .7s step-end infinite;
+      width: fit-content;
+    }
+    @keyframes typing {
+      from { width: 0; }
+      to   { width: 100%; }
+    }
+    @keyframes blink {
+      0%,100% { border-color: var(--green); }
+      50%      { border-color: transparent; }
+    }
+
+    /* ─── STATS BAR ──────────────────────────────────────────────── */
+    #stats {
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      background: linear-gradient(90deg, var(--bg-2), var(--bg-3), var(--bg-2));
+      padding: 2.5rem 2rem;
+    }
+    .stats-inner {
+      max-width: 1140px; margin: 0 auto;
+      display: grid; grid-template-columns: repeat(4,1fr);
+      gap: 2rem;
+    }
+    .stat-item { text-align: center; }
+    .stat-num {
+      font-family: var(--font-d);
+      font-size: 2.4rem; font-weight: 800;
+      letter-spacing: -.04em;
+      background: linear-gradient(135deg, var(--text-1), var(--blue));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .stat-label {
+      font-size: .8rem; color: var(--text-2);
+      margin-top: .3rem; text-transform: uppercase; letter-spacing: .07em;
+    }
+    .stat-divider {
+      width: 1px; background: var(--border);
+    }
+
+    /* ─── SECTION BASE ───────────────────────────────────────────── */
+    section { padding: 7rem 2rem; }
+    .section-inner { max-width: 1140px; margin: 0 auto; }
+    .section-tag {
+      display: inline-flex; align-items: center; gap: .5rem;
+      font-size: .75rem; font-weight: 600; letter-spacing: .1em;
+      text-transform: uppercase; color: var(--blue);
+      margin-bottom: 1rem;
+    }
+    .section-tag::before {
+      content: ''; display: block;
+      width: 20px; height: 1px; background: var(--blue);
+    }
+    h2 {
+      font-family: var(--font-d);
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 800; letter-spacing: -.03em;
+      line-height: 1.1; margin-bottom: 1rem;
+    }
+    .section-sub {
+      font-size: 1.05rem; color: var(--text-2);
+      max-width: 520px; line-height: 1.7;
+      margin-bottom: 3.5rem;
+    }
+
+    /* ─── ABOUT ──────────────────────────────────────────────────── */
+    #about .section-inner {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 5rem; align-items: center;
+    }
+    .about-text p {
+      color: var(--text-2); line-height: 1.8; margin-bottom: 1.2rem;
+    }
+    .about-text p strong { color: var(--text-1); }
+    .about-text p:last-child { margin-bottom: 0; }
+    .about-stack {
+      display: flex; flex-direction: column; gap: 1rem;
+    }
+    .stack-item {
+      background: var(--bg-2);
+      border: 1px solid var(--border);
+      border-radius: var(--r);
+      padding: 1.2rem 1.4rem;
+      display: flex; align-items: center; gap: 1rem;
+      transition: border-color var(--transition), transform var(--transition);
+    }
+    .stack-item:hover {
+      border-color: var(--border-h);
+      transform: translateX(6px);
+    }
+    .stack-icon {
+      width: 42px; height: 42px; border-radius: var(--r-sm);
+      background: var(--blue-dim);
+      display: grid; place-items: center; flex-shrink: 0;
+      font-size: 1.1rem;
+    }
+    .stack-info h4 { font-size: .9rem; font-weight: 600; margin-bottom: .1rem; }
+    .stack-info p  { font-size: .8rem; color: var(--text-2); line-height: 1.4; }
+
+    /* ─── SERVICES ───────────────────────────────────────────────── */
+    #services { background: var(--bg-2); }
+    .services-grid {
+      display: grid; grid-template-columns: repeat(2,1fr);
+      gap: 1.5rem;
+    }
+    .svc-card {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--r);
+      padding: 2rem;
+      position: relative; overflow: hidden;
+      transition: border-color var(--transition), transform var(--transition),
+                  box-shadow var(--transition);
+      cursor: default;
+    }
+    .svc-card::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--blue), transparent);
+      opacity: 0; transition: opacity var(--transition);
+    }
+    .svc-card:hover {
+      border-color: var(--border-h);
+      transform: translateY(-4px);
+      box-shadow: 0 24px 60px rgba(0,0,0,.4);
+    }
+    .svc-card:hover::before { opacity: 1; }
+    .svc-card.gold-card:hover { border-color: rgba(240,165,0,.4); }
+    .svc-card.gold-card::before {
+      background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    }
+    .svc-number {
+      font-family: var(--font-d); font-size: .8rem; font-weight: 700;
+      color: var(--blue); letter-spacing: .1em; margin-bottom: 1.2rem;
+    }
+    .svc-card.gold-card .svc-number { color: var(--gold); }
+    .svc-icon {
+      width: 50px; height: 50px; border-radius: 12px;
+      background: var(--blue-dim);
+      border: 1px solid rgba(26,115,232,.2);
+      display: grid; place-items: center;
+      font-size: 1.4rem; margin-bottom: 1.2rem;
+    }
+    .svc-card.gold-card .svc-icon {
+      background: var(--gold-dim);
+      border-color: rgba(240,165,0,.2);
+    }
+    .svc-card h3 {
+      font-family: var(--font-d); font-size: 1.3rem; font-weight: 700;
+      letter-spacing: -.02em; margin-bottom: .8rem;
+    }
+    .svc-card p { font-size: .9rem; color: var(--text-2); line-height: 1.7; margin-bottom: 1.5rem; }
+    .svc-deliverables { margin-bottom: 1.8rem; }
+    .svc-deliverables li {
+      font-size: .82rem; color: var(--text-2);
+      padding: .35rem 0;
+      border-bottom: 1px solid var(--border);
+      display: flex; align-items: flex-start; gap: .6rem;
+    }
+    .svc-deliverables li:last-child { border: none; }
+    .svc-deliverables li::before {
+      content: '→'; color: var(--blue); font-size: .75rem; margin-top: .05rem; flex-shrink: 0;
+    }
+    .svc-card.gold-card .svc-deliverables li::before { color: var(--gold); }
+    .svc-footer {
+      display: flex; align-items: center; justify-content: space-between;
+      padding-top: 1.2rem; border-top: 1px solid var(--border);
+    }
+    .svc-price {
+      font-family: var(--font-d); font-size: 1.5rem; font-weight: 800;
+      letter-spacing: -.03em; color: var(--text-1);
+    }
+    .svc-price span { font-size: .8rem; color: var(--text-2); font-weight: 400; }
+    .svc-timeline {
+      font-size: .78rem; color: var(--text-3);
+      background: var(--bg-3); border: 1px solid var(--border);
+      padding: .3rem .8rem; border-radius: 99px;
+    }
+
+    /* ─── HOW IT WORKS ───────────────────────────────────────────── */
+    .process-steps {
+      display: grid; grid-template-columns: repeat(3,1fr);
+      gap: 2rem; position: relative;
+    }
+    .process-steps::before {
+      content: '';
+      position: absolute; top: 28px; left: calc(16.67% + 28px);
+      right: calc(16.67% + 28px); height: 1px;
+      background: linear-gradient(90deg, var(--blue), transparent, var(--blue));
+      opacity: .3;
+    }
+    .step {
+      display: flex; flex-direction: column;
+    }
+    .step-num {
+      width: 56px; height: 56px; border-radius: 50%;
+      background: var(--bg-2);
+      border: 1px solid var(--border);
+      display: grid; place-items: center;
+      font-family: var(--font-d); font-size: 1.1rem; font-weight: 800;
+      color: var(--blue);
+      margin-bottom: 1.4rem;
+      transition: background var(--transition), border-color var(--transition),
+                  box-shadow var(--transition);
+    }
+    .step:hover .step-num {
+      background: var(--blue-dim);
+      border-color: var(--blue);
+      box-shadow: 0 0 20px var(--blue-glow);
+    }
+    .step h3 {
+      font-family: var(--font-d); font-size: 1.1rem; font-weight: 700;
+      margin-bottom: .6rem;
+    }
+    .step p { font-size: .88rem; color: var(--text-2); line-height: 1.7; }
+
+    /* ─── ROI SECTION ────────────────────────────────────────────── */
+    #roi {
+      background: linear-gradient(180deg, var(--bg-2) 0%, var(--bg) 100%);
+      position: relative; overflow: hidden;
+    }
+    #roi::before {
+      content: '';
+      position: absolute; top: 50%; left: 50%;
+      transform: translate(-50%,-50%);
+      width: 600px; height: 400px;
+      background: radial-gradient(ellipse, rgba(240,165,0,.07) 0%, transparent 65%);
+      pointer-events: none;
+    }
+    .roi-grid {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 4rem; align-items: center;
+    }
+    .roi-numbers {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem;
+    }
+    .roi-card {
+      background: var(--bg-3);
+      border: 1px solid var(--border);
+      border-radius: var(--r);
+      padding: 1.5rem;
+      transition: border-color var(--transition);
+    }
+    .roi-card:hover { border-color: rgba(240,165,0,.3); }
+    .roi-card .lbl {
+      font-size: .72rem; text-transform: uppercase; letter-spacing: .08em;
+      color: var(--text-3); margin-bottom: .6rem;
+    }
+    .roi-num {
+      font-family: var(--font-d); font-size: 2rem; font-weight: 800;
+      letter-spacing: -.04em; color: var(--gold);
+    }
+    .roi-desc { font-size: .8rem; color: var(--text-2); margin-top: .3rem; }
+    .roi-text h2 { margin-bottom: 1rem; }
+    .roi-text p { font-size: 1rem; color: var(--text-2); line-height: 1.8; margin-bottom: 1.2rem; }
+    .roi-text p strong { color: var(--text-1); }
+    .roi-breakdown {
+      background: var(--bg-2); border: 1px solid var(--border);
+      border-radius: var(--r); padding: 1.2rem 1.5rem; margin-top: 1.5rem;
+    }
+    .roi-breakdown-title {
+      font-size: .75rem; text-transform: uppercase; letter-spacing: .08em;
+      color: var(--text-3); margin-bottom: 1rem;
+    }
+    .roi-row {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: .5rem 0; border-bottom: 1px solid var(--border);
+      font-size: .85rem;
+    }
+    .roi-row:last-child { border: none; }
+    .roi-row .roi-row-label { color: var(--text-2); }
+    .roi-row .roi-row-val {
+      font-weight: 600; color: var(--text-1);
+      font-family: var(--font-d); letter-spacing: -.01em;
+    }
+    .roi-row .roi-row-val.green { color: var(--green); }
+
+    /* ─── TESTIMONIAL / CASE ─────────────────────────────────────── */
+    #case {
+      background: var(--bg-2);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+    .case-inner {
+      max-width: 780px; margin: 0 auto; text-align: center;
+    }
+    .case-inner blockquote {
+      font-family: var(--font-d);
+      font-size: clamp(1.2rem, 2.5vw, 1.7rem);
+      font-weight: 600; letter-spacing: -.02em; line-height: 1.4;
+      color: var(--text-1); margin: 1.5rem 0 2rem;
+    }
+    .case-inner blockquote em { color: var(--gold); font-style: normal; }
+    .case-attr { font-size: .85rem; color: var(--text-3); }
+    .quote-mark {
+      font-family: Georgia, serif; font-size: 5rem; line-height: 1;
+      color: var(--blue); opacity: .2;
+    }
+
+    /* ─── PRICING CTA ────────────────────────────────────────────── */
+    #pricing .section-inner {
+      display: grid; grid-template-columns: 1fr 1fr 1fr;
+      gap: 1.5rem; align-items: start;
+    }
+    .price-card {
+      background: var(--bg-2);
+      border: 1px solid var(--border);
+      border-radius: var(--r);
+      padding: 2rem;
+      position: relative;
+      transition: border-color var(--transition), transform var(--transition);
+    }
+    .price-card:hover {
+      border-color: var(--border-h);
+      transform: translateY(-4px);
+    }
+    .price-card.featured {
+      border-color: var(--blue);
+      background: linear-gradient(160deg, rgba(26,115,232,.08), var(--bg-2));
+    }
+    .price-badge {
+      position: absolute; top: -12px; left: 50%; transform: translateX(-50%);
+      background: var(--blue); color: #fff;
+      font-size: .72rem; font-weight: 700; letter-spacing: .07em;
+      text-transform: uppercase; padding: .3rem 1rem; border-radius: 99px;
+    }
+    .price-name {
+      font-family: var(--font-d); font-size: 1.1rem; font-weight: 700;
+      margin-bottom: .4rem;
+    }
+    .price-desc { font-size: .83rem; color: var(--text-2); margin-bottom: 1.5rem; }
+    .price-amount {
+      font-family: var(--font-d); font-size: 2.4rem; font-weight: 800;
+      letter-spacing: -.04em; margin-bottom: .3rem;
+    }
+    .price-amount span { font-size: 1rem; font-weight: 400; color: var(--text-2); }
+    .price-save { font-size: .78rem; color: var(--green); margin-bottom: 1.5rem; }
+    .price-features { margin-bottom: 2rem; }
+    .price-features li {
+      font-size: .85rem; color: var(--text-2);
+      padding: .5rem 0; border-bottom: 1px solid var(--border);
+      display: flex; gap: .6rem; align-items: flex-start;
+    }
+    .price-features li:last-child { border: none; }
+    .price-features li::before { content: '✓'; color: var(--green); flex-shrink: 0; font-weight: 700; }
+    .btn-price {
+      display: block; text-align: center;
+      padding: .9rem; border-radius: var(--r-sm);
+      font-weight: 600; font-size: .9rem;
+      transition: var(--transition);
+    }
+    .btn-price.outline {
+      border: 1px solid var(--border-h);
+      color: var(--text-1);
+    }
+    .btn-price.outline:hover { background: var(--blue-dim); }
+    .btn-price.filled {
+      background: var(--blue); color: #fff;
+    }
+    .btn-price.filled:hover { box-shadow: 0 0 24px var(--blue-glow); }
+
+    /* ─── CONTACT ────────────────────────────────────────────────── */
+    #contact {
+      position: relative; overflow: hidden;
+      background: var(--bg-2);
+    }
+    #contact::before {
+      content: '';
+      position: absolute; bottom: -200px; left: 50%; transform: translateX(-50%);
+      width: 700px; height: 700px;
+      background: radial-gradient(ellipse, rgba(26,115,232,.1) 0%, transparent 60%);
+      pointer-events: none;
+    }
+    .contact-inner {
+      position: relative; z-index: 1;
+      max-width: 760px; margin: 0 auto; text-align: center;
+    }
+    .contact-inner h2 { margin-bottom: 1rem; }
+    .contact-inner p {
+      font-size: 1.05rem; color: var(--text-2); margin-bottom: 2.5rem;
+    }
+    .contact-cards {
+      display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;
+      margin-bottom: 2.5rem;
+    }
+    .contact-card {
+      background: var(--bg-3);
+      border: 1px solid var(--border);
+      border-radius: var(--r);
+      padding: 1.1rem 1.6rem;
+      display: flex; align-items: center; gap: .8rem;
+      transition: border-color var(--transition), transform var(--transition);
+      font-size: .9rem;
+    }
+    .contact-card:hover {
+      border-color: var(--border-h);
+      transform: translateY(-3px);
+    }
+    .contact-card .icon {
+      width: 36px; height: 36px; border-radius: var(--r-sm);
+      background: var(--blue-dim);
+      display: grid; place-items: center; font-size: 1rem; flex-shrink: 0;
+    }
+    .contact-card strong { display: block; font-size: .78rem; color: var(--text-3); margin-bottom: .15rem; text-transform: uppercase; letter-spacing: .05em; }
+    .availability {
+      display: inline-flex; align-items: center; gap: .5rem;
+      font-size: .83rem; color: var(--green);
+      background: rgba(52,168,83,.1); border: 1px solid rgba(52,168,83,.2);
+      padding: .45rem 1.1rem; border-radius: 99px;
+    }
+    .availability::before {
+      content: ''; width: 7px; height: 7px; border-radius: 50%;
+      background: var(--green); animation: pulse 2s infinite;
+    }
+
+    /* ─── FOOTER ─────────────────────────────────────────────────── */
+    footer {
+      padding: 2rem;
+      border-top: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between;
+      flex-wrap: wrap; gap: 1rem;
+    }
+    .footer-inner { max-width: 1140px; margin: 0 auto; width: 100%; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; }
+    .footer-copy { font-size: .82rem; color: var(--text-3); }
+    .footer-links { display: flex; gap: 1.5rem; }
+    .footer-links a { font-size: .82rem; color: var(--text-3); transition: color var(--transition); }
+    .footer-links a:hover { color: var(--blue); }
+
+    /* ─── SCROLL REVEAL ──────────────────────────────────────────── */
+    .reveal {
+      opacity: 0; transform: translateY(28px);
+      transition: opacity .65s ease, transform .65s ease;
+    }
+    .reveal.visible { opacity: 1; transform: none; }
+
+    /* ─── ANIMATIONS ─────────────────────────────────────────────── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: none; }
+    }
+
+    /* ─── RESPONSIVE ─────────────────────────────────────────────── */
+    @media (max-width: 1024px) {
+      .hero-inner { grid-template-columns: 1fr; gap: 3rem; }
+      .hero-visual { display: none; }
+      #about .section-inner { grid-template-columns: 1fr; }
+      .roi-grid { grid-template-columns: 1fr; }
+      .roi-numbers { order: -1; }
+    }
+    @media (max-width: 768px) {
+      section { padding: 5rem 1.5rem; }
+      .stats-inner { grid-template-columns: repeat(2,1fr); }
+      .stat-divider { display: none; }
+      .services-grid { grid-template-columns: 1fr; }
+      .process-steps { grid-template-columns: 1fr; }
+      .process-steps::before { display: none; }
+      #pricing .section-inner { grid-template-columns: 1fr; }
+      .roi-numbers { grid-template-columns: 1fr 1fr; }
+      .nav-links { display: none; }
+      .hamburger { display: flex; }
+      nav { padding: 1rem 1.5rem; }
+      h1 { font-size: 2.2rem; }
+    }
+    @media (max-width: 480px) {
+      .stats-inner { grid-template-columns: 1fr 1fr; }
+      .kpi-grid { grid-template-columns: 1fr; }
+      .roi-numbers { grid-template-columns: 1fr; }
+      .contact-cards { flex-direction: column; }
+    }
+
+    /* Mobile nav */
+    .mobile-nav {
+      display: none;
+      position: fixed; inset: 0; z-index: 99;
+      background: rgba(7,9,15,.97);
+      backdrop-filter: blur(20px);
+      flex-direction: column; align-items: center; justify-content: center;
+      gap: 2rem;
+    }
+    .mobile-nav.open { display: flex; }
+    .mobile-nav a {
+      font-family: var(--font-d); font-size: 1.6rem; font-weight: 700;
+      color: var(--text-1); transition: color var(--transition);
+    }
+    .mobile-nav a:hover { color: var(--blue); }
+    .mobile-close {
+      position: absolute; top: 1.5rem; right: 1.5rem;
+      font-size: 1.5rem; cursor: pointer; color: var(--text-2);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Cursor -->
+  <div class="cursor" id="cursor">
+    <div class="cursor-dot"></div>
+    <div class="cursor-ring"></div>
+  </div>
+
+  <!-- Mobile Nav -->
+  <div class="mobile-nav" id="mobileNav">
+    <span class="mobile-close" id="mobileClose">✕</span>
+    <a href="#about"    onclick="closeMobile()">About</a>
+    <a href="#services" onclick="closeMobile()">Services</a>
+    <a href="#roi"      onclick="closeMobile()">ROI</a>
+    <a href="#pricing"  onclick="closeMobile()">Pricing</a>
+    <a href="#contact"  onclick="closeMobile()">Contact</a>
+  </div>
+
+  <!-- Nav -->
+  <nav id="nav">
+    <div class="nav-logo">
+      <span></span>
+      Ahmed Mustafa
+    </div>
+    <ul class="nav-links">
+      <li><a href="#about">About</a></li>
+      <li><a href="#services">Services</a></li>
+      <li><a href="#roi">ROI</a></li>
+      <li><a href="#pricing">Pricing</a></li>
+      <li><a href="#contact" class="nav-cta">Let's Talk</a></li>
+    </ul>
+    <div class="hamburger" id="hamburger">
+      <span></span><span></span><span></span>
+    </div>
+  </nav>
+
+  <!-- ─── HERO ─────────────────────────────────────────────────── -->
+  <section id="hero">
+    <div class="hero-inner">
+      <div class="hero-content">
+        <div class="hero-badge">Healthcare Data Analytics</div>
+        <h1>
+          Turning Lab Data into<br>
+          <span class="accent">Revenue</span> &amp;
+          <span class="gold">Growth</span>
+        </h1>
+        <p class="hero-sub">
+          I help medical laboratories across Egypt recover millions in
+          lost revenue — through patient analytics, doctor performance
+          tracking, and corporate contract optimization.
+        </p>
+        <div class="hero-actions">
+          <a href="#contact" class="btn-primary">
+            Book a Free Consultation
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+              <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </a>
+          <a href="#services" class="btn-outline">See the Services</a>
+        </div>
+      </div>
+
+      <!-- Terminal Card -->
+      <div class="hero-visual">
+        <div class="terminal-card">
+          <div class="terminal-bar">
+            <span></span><span></span><span></span>
+            <span class="terminal-label">trust_labs_dashboard.py</span>
+          </div>
+          <div class="terminal-body">
+            <div class="kpi-grid">
+              <div class="kpi-card">
+                <div class="kpi-label">Revenue Recovered</div>
+                <div class="kpi-value blue">7.0M</div>
+                <div class="kpi-delta">↑ Annual opportunity</div>
+              </div>
+              <div class="kpi-card">
+                <div class="kpi-label">Pilot ROI</div>
+                <div class="kpi-value gold">19×</div>
+                <div class="kpi-delta">↑ 80K → 1.5M EGP</div>
+              </div>
+              <div class="kpi-card">
+                <div class="kpi-label">High-Risk Patients</div>
+                <div class="kpi-value red">29.2%</div>
+                <div class="kpi-delta neg">↓ Churn prevention needed</div>
+              </div>
+              <div class="kpi-card">
+                <div class="kpi-label">Active Doctors</div>
+                <div class="kpi-value green">87%</div>
+                <div class="kpi-delta">↑ Referral tracking</div>
+              </div>
+            </div>
+            <div class="mini-chart">
+              <div class="bar-seg"></div>
+              <div class="bar-seg"></div>
+              <div class="bar-seg"></div>
+              <div class="bar-seg"></div>
+              <div class="bar-seg"></div>
+              <div class="bar-seg"></div>
+            </div>
+            <div class="chart-label">
+              <span>Aug</span><span>Sep</span><span>Oct</span>
+              <span>Nov</span><span>Dec</span><span>Jan ▲</span>
+            </div>
+            <div class="typing-line">$ Running churn_prevention_model.py ...</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── STATS BAR ─────────────────────────────────────────────── -->
+  <div id="stats">
+    <div class="stats-inner">
+      <div class="stat-item reveal">
+        <div class="stat-num" data-target="7">0</div>
+        <div class="stat-label">Million EGP Opportunity Identified</div>
+      </div>
+      <div class="stat-divider"></div>
+      <div class="stat-item reveal">
+        <div class="stat-num" data-target="19" data-suffix="×">0</div>
+        <div class="stat-label">Return on Investment (Pilot)</div>
+      </div>
+      <div class="stat-divider"></div>
+      <div class="stat-item reveal">
+        <div class="stat-num" data-target="5" data-suffix="wks">0</div>
+        <div class="stat-label">Delivery Timeline</div>
+      </div>
+      <div class="stat-divider"></div>
+      <div class="stat-item reveal">
+        <div class="stat-num" data-target="20" data-prefix="">0</div>
+        <div class="stat-label">Branches Covered — No Extra Fees</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── ABOUT ─────────────────────────────────────────────────── -->
+  <section id="about">
+    <div class="section-inner">
+      <div class="about-text reveal">
+        <div class="section-tag">About Me</div>
+        <h2>Analytics That<br>Drives Real Results</h2>
+        <p>I'm <strong>Ahmed Mustafa</strong>, a healthcare data analytics specialist
+        based in Egypt. I work directly with medical laboratory chains to uncover
+        hidden revenue through advanced patient behavior modeling, referral tracking,
+        and corporate contract analysis.</p>
+        <p>Unlike large consulting firms that charge 500,000+ EGP and hand you work
+        to a junior associate, <strong>you work directly with me</strong>. You get
+        enterprise-level insights at a fraction of the price — delivered in 5 weeks,
+        not 6 months.</p>
+        <p>My work is <strong>value-based, not time-based</strong>. Every engagement
+        is measured against one metric: how much revenue did we recover or protect?</p>
+      </div>
+      <div class="about-stack reveal">
+        <div class="stack-item">
+          <div class="stack-icon">📊</div>
+          <div class="stack-info">
+            <h4>R &amp; Python Analytics</h4>
+            <p>RFM models, churn prediction, cohort analysis, time-series forecasting</p>
+          </div>
+        </div>
+        <div class="stack-item">
+          <div class="stack-icon">🗄️</div>
+          <div class="stack-info">
+            <h4>SQL &amp; Database Design</h4>
+            <p>SQLite, PostgreSQL — optimized schemas for real-time dashboard queries</p>
+          </div>
+        </div>
+        <div class="stack-item">
+          <div class="stack-icon">📈</div>
+          <div class="stack-info">
+            <h4>Dashboards &amp; Reporting</h4>
+            <p>Streamlit, Power BI, Excel — live dashboards your team can use daily</p>
+          </div>
+        </div>
+        <div class="stack-item">
+          <div class="stack-icon">🏥</div>
+          <div class="stack-info">
+            <h4>Healthcare Domain Knowledge</h4>
+            <p>Patient loyalty systems, doctor referral pipelines, corporate contract management</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── SERVICES ─────────────────────────────────────────────── -->
+  <section id="services">
+    <div class="section-inner">
+      <div class="reveal">
+        <div class="section-tag">What I Deliver</div>
+        <h2>Four Services.<br>One Revenue Goal.</h2>
+        <p class="section-sub">
+          Each service is designed to identify, quantify, and recover a specific
+          category of revenue leakage in your lab operations.
+        </p>
+      </div>
+      <div class="services-grid">
+
+        <!-- Service 1 -->
+        <div class="svc-card reveal">
+          <div class="svc-number">01</div>
+          <div class="svc-icon">👨‍⚕️</div>
+          <h3>Doctor Referral Analysis</h3>
+          <p>A ranked dashboard of every referring doctor — who's growing,
+          who's declining, and who's stopped completely — with automated alerts
+          when referrals drop more than 20%.</p>
+          <ul class="svc-deliverables">
+            <li>Doctor performance dashboard ranked by revenue</li>
+            <li>Branch-level referral comparison (all 20 branches)</li>
+            <li>At-risk doctor report with intervention roadmap</li>
+            <li>Monthly tracking system with 20% drop alerts</li>
+          </ul>
+          <div class="svc-footer">
+            <div class="svc-price">80,000 <span>EGP</span></div>
+            <div class="svc-timeline">⏱ 5 weeks</div>
+          </div>
+        </div>
+
+        <!-- Service 2 -->
+        <div class="svc-card reveal">
+          <div class="svc-number">02</div>
+          <div class="svc-icon">🏢</div>
+          <h3>Corporate Contract Optimization</h3>
+          <p>I show you exactly which corporate clients are underutilizing their
+          contracts — with campaigns to activate dormant employees and a utilization
+          gap analysis against the 18% industry benchmark.</p>
+          <ul class="svc-deliverables">
+            <li>Corporate health scorecard with utilization gap analysis</li>
+            <li>Top 10 opportunity report with revenue projections</li>
+            <li>Activation campaign templates (email, WhatsApp, on-site)</li>
+            <li>Quarterly tracking dashboard per company</li>
+          </ul>
+          <div class="svc-footer">
+            <div class="svc-price">80,000 <span>EGP</span></div>
+            <div class="svc-timeline">⏱ 5 weeks</div>
+          </div>
+        </div>
+
+        <!-- Service 3 -->
+        <div class="svc-card reveal">
+          <div class="svc-number">03</div>
+          <div class="svc-icon">🔄</div>
+          <h3>Patient Journey Optimization</h3>
+          <p>Track where patients drop off — no-shows, uncollected results,
+          abnormal results with no follow-up — and build an automated SMS &amp;
+          WhatsApp intervention system to recover them.</p>
+          <ul class="svc-deliverables">
+            <li>Patient flow funnel with drop-off quantified in EGP</li>
+            <li>No-show pattern analysis with SMS ROI calculation</li>
+            <li>Follow-up gap report for high-risk patients</li>
+            <li>Loyalty points system (Bronze → Silver → Gold)</li>
+          </ul>
+          <div class="svc-footer">
+            <div class="svc-price">80,000 <span>EGP</span></div>
+            <div class="svc-timeline">⏱ 5 weeks</div>
+          </div>
+        </div>
+
+        <!-- Service 4 -->
+        <div class="svc-card gold-card reveal">
+          <div class="svc-number">04</div>
+          <div class="svc-icon">📱</div>
+          <h3>Digital Visibility</h3>
+          <p>Three-phase digital transformation: Google My Business + social
+          media foundation, then website with online booking, then mobile app
+          and advanced retargeting. Full-spectrum digital presence built from zero.</p>
+          <ul class="svc-deliverables">
+            <li>Google Maps optimization for all branches</li>
+            <li>Facebook, Instagram &amp; WhatsApp Business setup</li>
+            <li>Professional website with online booking portal</li>
+            <li>6 months of monthly performance reports</li>
+          </ul>
+          <div class="svc-footer">
+            <div class="svc-price">100,000 <span>EGP / 6mo</span></div>
+            <div class="svc-timeline">⏱ 6 months</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── HOW IT WORKS ──────────────────────────────────────────── -->
+  <section id="process">
+    <div class="section-inner">
+      <div class="reveal" style="text-align:center;margin-bottom:3.5rem;">
+        <div class="section-tag" style="justify-content:center;">The Process</div>
+        <h2>From Raw Data to<br>Recovered Revenue</h2>
+      </div>
+      <div class="process-steps">
+        <div class="step reveal">
+          <div class="step-num">01</div>
+          <h3>Data Access &amp; Audit</h3>
+          <p>You share your patient visit records, referral data, and corporate
+          usage files. I audit data quality, identify gaps, and set up the
+          analytical pipeline — no IT involvement needed from your side.</p>
+        </div>
+        <div class="step reveal">
+          <div class="step-num">02</div>
+          <h3>Analysis &amp; Modelling</h3>
+          <p>I run RFM loyalty scoring, churn risk models, referral performance
+          ranking, and corporate utilization analysis — all quantified in EGP so
+          the opportunity is concrete, not theoretical.</p>
+        </div>
+        <div class="step reveal">
+          <div class="step-num">03</div>
+          <h3>Dashboards &amp; Action Plan</h3>
+          <p>You receive live dashboards your team uses daily, a prioritized
+          intervention roadmap, and 30 days of support to make sure the insights
+          translate into actual revenue recovered.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── ROI ───────────────────────────────────────────────────── -->
+  <section id="roi">
+    <div class="section-inner">
+      <div class="roi-grid">
+        <div class="roi-numbers reveal">
+          <div class="roi-card">
+            <div class="lbl">Churn Prevention</div>
+            <div class="roi-num">870K</div>
+            <div class="roi-desc">EGP protected annually</div>
+          </div>
+          <div class="roi-card">
+            <div class="lbl">Silver → Gold Migration</div>
+            <div class="roi-num">1.37M</div>
+            <div class="roi-desc">EGP additional revenue</div>
+          </div>
+          <div class="roi-card">
+            <div class="lbl">Digital Acquisition</div>
+            <div class="roi-num">720K</div>
+            <div class="roi-desc">EGP new patient revenue</div>
+          </div>
+          <div class="roi-card">
+            <div class="lbl">Cross-Sell Automation</div>
+            <div class="roi-num">350K</div>
+            <div class="roi-desc">EGP from upselling</div>
+          </div>
+        </div>
+        <div class="roi-text reveal">
+          <div class="section-tag">Return on Investment</div>
+          <h2>The Numbers<br>Don't Lie</h2>
+          <p>The <strong>80,000 EGP pilot</strong> recovers its cost in under
+          3 weeks. Every month after that is pure profit from recovered revenue.</p>
+          <p>The <strong>full analytics package</strong> at 220,000 EGP has
+          delivered <strong>7 million EGP</strong> in identified annual
+          opportunity — a 32× return.</p>
+          <div class="roi-breakdown">
+            <div class="roi-breakdown-title">Full Package Financial Summary</div>
+            <div class="roi-row">
+              <span class="roi-row-label">Total investment (6 months)</span>
+              <span class="roi-row-val">247,500 EGP</span>
+            </div>
+            <div class="roi-row">
+              <span class="roi-row-label">Year 1 revenue impact</span>
+              <span class="roi-row-val">4,340,000 EGP</span>
+            </div>
+            <div class="roi-row">
+              <span class="roi-row-label">Payback period</span>
+              <span class="roi-row-val">Month 2</span>
+            </div>
+            <div class="roi-row">
+              <span class="roi-row-label">12-month net ROI</span>
+              <span class="roi-row-val green">1,755%</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── CASE / QUOTE ─────────────────────────────────────────── -->
+  <section id="case">
+    <div class="case-inner">
+      <div class="quote-mark reveal">"</div>
+      <blockquote class="reveal">
+        When you break it down, that's only <em>4,000 EGP per branch</em> —
+        for insights that recover millions in revenue you didn't know you were losing.
+      </blockquote>
+      <div class="case-attr reveal">
+        Ahmed Mustafa — Healthcare Data Analytics Specialist
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── PRICING ───────────────────────────────────────────────── -->
+  <section id="pricing">
+    <div class="section-inner" style="display:block;">
+      <div class="reveal" style="margin-bottom:3rem;">
+        <div class="section-tag">Transparent Pricing</div>
+        <h2>Start Small.<br>Scale When You See Results.</h2>
+        <p class="section-sub">
+          Three engagement options — from a low-risk pilot to a full
+          transformation. All 20 branches included at every tier.
+        </p>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;">
+
+        <div class="price-card reveal">
+          <div class="price-name">Pilot Project</div>
+          <div class="price-desc">One service. Five weeks. Prove the value first.</div>
+          <div class="price-amount">80,000 <span>EGP</span></div>
+          <div class="price-save">✓ 40K upfront / 40K on delivery</div>
+          <ul class="price-features">
+            <li>Choose ONE service (Doctor, Corporate, or Patient)</li>
+            <li>Full analysis across all 20 branches</li>
+            <li>Excel dashboard + PDF report</li>
+            <li>30 days support &amp; Q&A</li>
+            <li>Delivered in 5 weeks</li>
+          </ul>
+          <a href="#contact" class="btn-price outline">Start with Pilot</a>
+        </div>
+
+        <div class="price-card featured reveal">
+          <div class="price-badge">Most Popular</div>
+          <div class="price-name">Full Analytics</div>
+          <div class="price-desc">All three analytics services. Maximum impact.</div>
+          <div class="price-amount">220,000 <span>EGP</span></div>
+          <div class="price-save">✓ Saves 20,000 EGP vs individual</div>
+          <ul class="price-features">
+            <li>Doctor + Corporate + Patient analytics</li>
+            <li>Branch comparison across all 20 locations</li>
+            <li>Live Streamlit dashboard</li>
+            <li>60 days support &amp; training</li>
+            <li>Delivered in 14 weeks</li>
+          </ul>
+          <a href="#contact" class="btn-price filled">Get Full Package</a>
+        </div>
+
+        <div class="price-card reveal">
+          <div class="price-name">Complete Package</div>
+          <div class="price-desc">Analytics + 6 months digital transformation.</div>
+          <div class="price-amount">300,000 <span>EGP</span></div>
+          <div class="price-save">✓ Saves 20,000 EGP + 6-month digital included</div>
+          <ul class="price-features">
+            <li>Everything in Full Analytics</li>
+            <li>Google Maps + Social Media setup</li>
+            <li>Website with online booking</li>
+            <li>Monthly digital performance reports</li>
+            <li>6-month engagement, 3-phase delivery</li>
+          </ul>
+          <a href="#contact" class="btn-price outline">Go Complete</a>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── CONTACT ───────────────────────────────────────────────── -->
+  <section id="contact">
+    <div class="contact-inner">
+      <div class="reveal">
+        <div class="section-tag" style="justify-content:center;">Get In Touch</div>
+        <h2>Let's Talk<br>About Your Data</h2>
+        <p>
+          No pitch decks upfront. Tell me about your lab, share some numbers,
+          and I'll tell you where the opportunity is — on a 15-minute call.
+        </p>
+      </div>
+      <div class="contact-cards reveal">
+        <a href="tel:+201143575727" class="contact-card">
+          <div class="icon">📞</div>
+          <div>
+            <strong>Phone / WhatsApp</strong>
+            +20 114 357 5727
+          </div>
+        </a>
+        <a href="mailto:ahmedsm2727@gmail.com" class="contact-card">
+          <div class="icon">✉️</div>
+          <div>
+            <strong>Email</strong>
+            ahmedsm2727@gmail.com
+          </div>
+        </a>
+        <div class="contact-card">
+          <div class="icon">📍</div>
+          <div>
+            <strong>Location</strong>
+            Cairo &amp; Giza, Egypt
+          </div>
+        </div>
+      </div>
+      <div class="reveal">
+        <div class="availability">Available for new projects</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── FOOTER ────────────────────────────────────────────────── -->
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-copy">
+        © 2025 Ahmed Mustafa · Healthcare Data Analytics
+      </div>
+      <div class="footer-links">
+        <a href="#services">Services</a>
+        <a href="#roi">ROI</a>
+        <a href="#pricing">Pricing</a>
+        <a href="#contact">Contact</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ─── SCRIPTS ───────────────────────────────────────────────── -->
+  <script>
+    // ── Cursor ────────────────────────────────────────────────────
+    const cursor = document.getElementById('cursor');
+    const dot  = cursor.querySelector('.cursor-dot');
+    const ring = cursor.querySelector('.cursor-ring');
+    let mx = 0, my = 0, rx = 0, ry = 0;
+
+    document.addEventListener('mousemove', e => {
+      mx = e.clientX; my = e.clientY;
+      dot.style.left  = mx + 'px';
+      dot.style.top   = my + 'px';
+    });
+    (function animRing() {
+      rx += (mx - rx) * .12;
+      ry += (my - ry) * .12;
+      ring.style.left = rx + 'px';
+      ring.style.top  = ry + 'px';
+      requestAnimationFrame(animRing);
+    })();
+    document.querySelectorAll('a, button, .svc-card, .kpi-card, .stack-item').forEach(el => {
+      el.addEventListener('mouseenter', () => {
+        ring.style.width  = '60px';
+        ring.style.height = '60px';
+        ring.style.opacity = '.5';
+      });
+      el.addEventListener('mouseleave', () => {
+        ring.style.width  = '40px';
+        ring.style.height = '40px';
+        ring.style.opacity = '1';
+      });
+    });
+
+    // ── Nav scroll ────────────────────────────────────────────────
+    const nav = document.getElementById('nav');
+    window.addEventListener('scroll', () => {
+      nav.classList.toggle('scrolled', window.scrollY > 40);
+    });
+
+    // ── Mobile nav ────────────────────────────────────────────────
+    document.getElementById('hamburger').onclick = () =>
+      document.getElementById('mobileNav').classList.add('open');
+    document.getElementById('mobileClose').onclick = closeMobile;
+    function closeMobile() {
+      document.getElementById('mobileNav').classList.remove('open');
+    }
+
+    // ── Scroll reveal ─────────────────────────────────────────────
+    const reveals = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach((e, i) => {
+        if (e.isIntersecting) {
+          setTimeout(() => e.target.classList.add('visible'), i * 60);
+          observer.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.12 });
+    reveals.forEach(el => observer.observe(el));
+
+    // ── Counter animation ─────────────────────────────────────────
+    const counters = document.querySelectorAll('.stat-num[data-target]');
+    const cObserver = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+        const el     = entry.target;
+        const target = +el.dataset.target;
+        const suffix = el.dataset.suffix || '';
+        const prefix = el.dataset.prefix !== undefined ? el.dataset.prefix : '';
+        const dur    = 1600;
+        const step   = dur / 60;
+        let current  = 0;
+        const inc = target / (dur / 16);
+        const timer = setInterval(() => {
+          current = Math.min(current + inc, target);
+          el.textContent = prefix + (Number.isInteger(target)
+            ? Math.round(current) : current.toFixed(1)) + suffix;
+          if (current >= target) clearInterval(timer);
+        }, 16);
+        cObserver.unobserve(el);
+      });
+    }, { threshold: .5 });
+    counters.forEach(el => cObserver.observe(el));
+  </script>
+
+</body>
+</html>
