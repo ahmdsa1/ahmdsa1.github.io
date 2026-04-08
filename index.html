@@ -337,7 +337,6 @@
       -webkit-background-clip: text; -webkit-text-fill-color: transparent;
       background-clip: text;
     }
-    .stat-num.stat-static { font-size: 1.85rem; letter-spacing: -.02em; }
     .stat-label { font-size: .8rem; color: var(--text-2); margin-top: .3rem; text-transform: uppercase; letter-spacing: .07em; }
     .stat-divider { width: 1px; background: var(--border); }
 
@@ -828,22 +827,22 @@
   <div id="stats">
     <div class="stats-inner">
       <div class="stat-item reveal">
-        <div class="stat-num stat-static">10–30×</div>
-        <div class="stat-label">Revenue Impact vs. Monthly Fee</div>
+        <div class="stat-num" data-target="7">0</div>
+        <div class="stat-label">Million EGP Opportunity Identified</div>
       </div>
       <div class="stat-divider"></div>
       <div class="stat-item reveal">
-        <div class="stat-num stat-static">800–1800%</div>
-        <div class="stat-label">Typical 12-Month Net ROI</div>
+        <div class="stat-num" data-target="19" data-suffix="×">0</div>
+        <div class="stat-label">Return on Investment (Pilot)</div>
       </div>
       <div class="stat-divider"></div>
       <div class="stat-item reveal">
         <div class="stat-num" data-target="5" data-suffix="wks">0</div>
-        <div class="stat-label">Setup &amp; Delivery Timeline</div>
+        <div class="stat-label">Delivery Timeline</div>
       </div>
       <div class="stat-divider"></div>
       <div class="stat-item reveal">
-        <div class="stat-num stat-static">All</div>
+        <div class="stat-num" data-target="20" data-prefix="">0</div>
         <div class="stat-label">Branches Covered — No Extra Fees</div>
       </div>
     </div>
@@ -1164,16 +1163,15 @@
         <!-- Tier 1 — Basic -->
         <div class="price-card reveal">
           <div class="price-name">Basic Analytics</div>
-          <div class="price-desc">All core services. Priced per branch, per month.</div>
-          <div class="price-amount">5,000 <span>EGP / branch / mo</span></div>
+          <div class="price-desc">One focused service. Monthly monitoring &amp; reporting.</div>
+          <div class="price-amount">5,000 <span>EGP / mo</span></div>
           <div class="price-save">✓ Minimum 3-month commitment</div>
           <ul class="price-features">
-            <li>All three core modules included — Doctor, Corporate &amp; Patient analytics</li>
-            <li>Monthly performance report per branch</li>
+            <li>Choose ONE service module (Doctor, Corporate, or Patient)</li>
+            <li>Monthly performance report — all branches</li>
             <li>Excel dashboard refreshed monthly</li>
             <li>Email support &amp; Q&amp;A</li>
             <li>Data Diagnostic included in Month 1</li>
-            <li style="border-top: 1px solid rgba(240,165,0,.2); margin-top:.3rem; padding-top:.6rem; color:var(--text-3); font-style:italic;">Add-on: Lab test recommendation engine — custom quote</li>
           </ul>
           <a href="#contact" class="btn-price outline">Start Basic</a>
         </div>
@@ -1245,11 +1243,11 @@
             +20 114 357 5727
           </div>
         </a>
-        <a href="/cdn-cgi/l/email-protection#593831343c3d2a346b6e6b6e193e34383035773a3634" class="contact-card">
+        <a href="mailto:ahmedsm2727@gmail.com" class="contact-card">
           <div class="icon">✉️</div>
           <div>
             <strong>Email</strong>
-            <span class="__cf_email__" data-cfemail="52333a3f3736213f6065606512353f333b3e7c313d3f">[email&#160;protected]</span>
+            ahmedsm2727@gmail.com
           </div>
         </a>
         <div class="contact-card">
@@ -1282,7 +1280,7 @@
   </footer>
 
   <!-- ─── SCRIPTS ───────────────────────────────────────────────── -->
-  <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+  <script>
     // ── Cursor ────────────────────────────────────────────────────
     const cursor = document.getElementById('cursor');
     const dot  = cursor.querySelector('.cursor-dot');
@@ -1355,4 +1353,14 @@
         const timer = setInterval(() => {
           current = Math.min(current + inc, target);
           el.textContent = prefix + (Number.isInteger(target)
-            ? Math.round(current) : curr
+            ? Math.round(current) : current.toFixed(1)) + suffix;
+          if (current >= target) clearInterval(timer);
+        }, 16);
+        cObserver.unobserve(el);
+      });
+    }, { threshold: .5 });
+    counters.forEach(el => cObserver.observe(el));
+  </script>
+
+</body>
+</html>
